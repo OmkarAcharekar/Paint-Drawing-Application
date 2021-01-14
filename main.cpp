@@ -30,6 +30,67 @@ void processBorderMenu(int value)
 	ptsize = value;
 }
 
+void keyboard(unsigned char key, int xIn, int yIn)
+{
+	isSecond = false;
+	switch (key)
+	{
+	//Come Out From the Paint Application when we press (q or escape)
+	case 'q':
+	case 27: // 27 is the esc key
+		quit();
+		break;
+	case 'c':
+		clear();
+		break;
+	case '+':
+		if (shape == 5 && !isEraser)
+		{
+			if (brushSize < 16)
+				brushSize += 4;
+			else
+			{
+				cout << "[Warning] Airbrush's size cannot be larger. It is already the largest.\n";
+			}
+		}
+		else if (isEraser)
+		{
+			if (eraserSize < 10)
+				eraserSize += 4;
+			else
+			{
+				cout << "[Warning] Eraser's size cannot be larger. It is already the largest.\n";
+			}
+		}
+		break;
+	case '-':
+		if (shape == 5 && !isEraser)
+		{
+			if (brushSize > 4)
+				brushSize -= 4;
+			else
+			{
+				cout << "[Warning] Airbrush's size cannot be smaller. It is already the smallest.\n";
+			}
+		}
+		else if (isEraser)
+		{
+			if (eraserSize > 2)
+				eraserSize -= 4;
+			else
+			{
+				cout << "[Warning] Eraser's size cannot be smaller. It is already the smallest.\n";
+			}
+		}
+		break;
+	case 'u':
+		undo();
+		break;
+	case 'r':
+		redo();
+		break;
+	}
+}
 
 int main(int argc, char **argv)
 {
