@@ -782,16 +782,84 @@ void keyboard(unsigned char key, int xIn, int yIn)
 	}
 }
 
+void Timer(int val)
+{
+	glutPostRedisplay();		//To give window paint request which in turn activate display function.
+	glutTimerFunc(0, Timer, 0); //Timer function will be called back after every specific interval.
+}
+
+void callbackInit()
+{
+	//glutDisplayFunc is called whenever your window must be redrawn.
+	glutDisplayFunc(display);
+
+	glutReshapeFunc(reshape);
+
+	glutKeyboardFunc(keyboard);
+	/*
+	Sets the Keyboard callback for the current window.
+	glutKeyboardFunc(void( * callback )( unsigned char key, int x, int y ));
+	callback Client function for keyboard event.
+
+
+    As a convenience, the mouse coordinates, relative to your window, are also returned.
+    This callback is bound to the current window .
+	*/
+
+	glutMouseFunc(mouse);
+	/*
+	glutMouseFunc sets the mouse callback for the current window. When a user presses and releases mouse buttons in the window,
+	each press and each release generates a mouse callback. 
+	The button parameter is one of GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, or GLUT_RIGHT_BUTTON.
+    The state parameter is either GLUT_UP or GLUT_DOWN indicating whether the callback was due to a release or press respectively.
+    The x and y callback parameters indicate the window relative coordinates when the mouse button state changed. 
+
+    If a menu is attached to a button for a window, mouse callbacks will not be generated for that button.
+
+	*/
+	glutMotionFunc(motion);
+	/*
+
+glutMotionFunc and glutPassiveMotionFunc set the motion and passive motion callback respectively for the current window.
+The motion callback for a window is called when the mouse moves within the window while one or more mouse buttons are pressed.
+The passive motion callback for a window is called when the mouse moves within the window while no mouse buttons are pressed.
+The x and y callback parameters indicate the mouse location in window relative coordinates.
+Passing NULL to glutMotionFunc or glutPassiveMotionFunc disables the generation of the mouse or passive motion callback respectively.
+*/
+
+	glutTimerFunc(0, Timer, 0);
+}
+
 int main(int argc, char **argv)
 {
 	//glutInit will initialize the GLUT library and negotiate a session with the window system.
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-	
+	/*
+	GLUT_RGBA
+    Bit mask to select an RGBA mode window. This is the default if neither GLUT_RGBA nor GLUT_INDEX are specified.
+
+    GLUT_DOUBLE
+    Bit mask to select a double buffered window. This overrides GLUT_SINGLE if it is also specified.
+    */
+
+	//Setting Size and position of the Window
+	glutInitWindowSize(window_w, window_h);
+	glutInitWindowPosition(100, 100);
 
 	glutCreateWindow("Paint"); //Giving name to our Window
 
+	callbackInit();
+
+	//To print all the instructions
+	printGuide();
+
+	//creating Our Graphical User Interface
+	createOurMenu();
+
+	//Goes in an infinite loop till we give call to exit(0) and in this loop gives call to display function
+	glutMainLoop();
 
 	return (0);
 }
@@ -801,5 +869,40 @@ void printGuide()
 	std::cout << "#########################################################################\n"
 			  << "#                    Welcome to use this Paint tool!                    #\n"
 			  << "#########################################################################\n"
-			 
+			  << "A list of commands:\n"
+			  << "Right click\t"
+			  << "-> show menu\n"
+			  << "Left click\t"
+			  << "-> choose option\n"
+			  << "Menu \"Color\"\t"
+			  << "-> You can choose Red, Green, Blue, Yellow or Random, the default color is Red.\n"
+			  << "Menu \"Shapes\"\t"
+			  << "-> The default shape is Point.\n"
+			  << "\tPoint\t\t"
+			  << "-> draw a dot at the point clicked with the mouse. Clicking and dragging will draw points constantly like free-form drawing.\n"
+			  << "\tLine\t\t"
+			  << "-> draw a line between two subsequently clicked points.\n"
+			  << "\tRectangle\t"
+			  << "-> draw a rectangle with top-left corner specified by the first click and the bottom-right corner specified by a second click. If the second click is bottom-left, top-right or top-left comparing to the first click, a warning will show in the console.\n"
+			  << "\tCircle\t\t"
+			  << "-> draw a circle centered at the position of the first click, with its radius set by a second click.\n"
+			  << "\tAirbrush\t"
+			  << "-> draw multiple points as brush around the clicked point. There are four options of size.\n"
+			  << "Menu \"Eraser\"\t"
+			  << "-> erase the points by clicking and dragging.\n"
+			  << "Menu \"Clear\"\t"
+			  << "-> clear all the points\n"
+			  << "Menu \"Quit\"\t"
+			  << "-> close the window.\n"
+			  << "Keyboard 'q'\t"
+			  << "-> close the window.\n"
+			  << "Keyboard 'esc'\t"
+			  << "-> close the window.\n"
+			  << "Keyboard 'c'\t"
+			  << "-> clear all the points and clear the history.\n"
+			  << "Keyboard '+'\t"
+			  << "-> larger size of eraser or brush.\n"
+			  << "Keyboard '-'\t"
+			  << "-> smaller size of eraser or brush.\n"
+			  << "################################# Paint #################################" << std::endl;
 }
