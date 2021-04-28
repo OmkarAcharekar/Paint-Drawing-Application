@@ -709,14 +709,7 @@ void reshape(int w, int h)
 	window_h = h;
 
 	//Before Calling gluOrtho2D we need to have the below 2 lines of code
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	//Rectangular Region inWorld to be displayed
-	gluOrtho2D(0, w, 0, h); //( width_start , height start ,width end , height end )
-
-	//These Functions can be Used Later if we Want to implement Functionalities like ZoomIn and ZoomOut
-
-	glMatrixMode(GL_MODELVIEW);
+	
 	glViewport(0, 0, w, h); // Area on Screen to Display Objects ( width_start , height start ,width end , height end )
 }
 
