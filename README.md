@@ -35,3 +35,6 @@ Left click -> choose option.
 4. **-** -> smaller size of eraser or brush.
 5. **u** -> undo, the history can keep maximum 20 records.
 6. **r** -> redo, the history can keep maximum 20 records.
+
+### Credits
+https://github.com/Emilieczq/Paint-tool
